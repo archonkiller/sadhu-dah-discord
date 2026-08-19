@@ -33,13 +33,13 @@ unique = {}
 for item in listings:
     unique[item["url"]] = item
 
-listings = list(unique.values())[:12]
+listings = list(unique.values())
 
 try:
     with open(STATE_FILE) as f:
         seen = set(json.load(f))
 except FileNotFoundError:
-    seen = set(item["url"] for item in listings)
+    seen = set()
 
 new = [item for item in listings if item["url"] not in seen]
 
