@@ -64,10 +64,7 @@ for item in reversed(new):
 
     response = requests.post(WEBHOOK, json=payload)
 
-print(
-    f"Discord response: {response.status_code} "
-    f"{response.text}"
-)
+
 
 with open(STATE_FILE, "w") as f:
     json.dump([item["url"] for item in listings], f)
