@@ -35,13 +35,19 @@ for item in listings:
 
 listings = list(unique.values())
 
+print(f"Found {len(listings)} Etsy listings")
+
 try:
     with open(STATE_FILE) as f:
         seen = set(json.load(f))
 except FileNotFoundError:
     seen = set()
 
+print(f"Previously seen: {len(seen)}")
+    
 new = [item for item in listings if item["url"] not in seen]
+
+print(f"New listings to post: {len(new)}")
 
 for item in reversed(new):
     payload = {
@@ -56,7 +62,12 @@ for item in reversed(new):
         }]
     }
 
-    requests.post(WEBHOOK, json=payload)
+    response = requests.post(WEBHOOK, json=payload)
+
+print(
+    f"Discord response: {response.status_code} "
+    f"{response.text}"
+)
 
 with open(STATE_FILE, "w") as f:
     json.dump([item["url"] for item in listings], f)
